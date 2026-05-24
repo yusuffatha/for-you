@@ -18,7 +18,7 @@
             background-color: #fafafa;
             font-family: 'Poppins', sans-serif;
             color: #333;
-            overflow: hidden; 
+            overflow: hidden; /* Mencegah scrolling saat transisi */
             height: 100vh;
             width: 100vw;
             display: flex;
@@ -26,6 +26,7 @@
             align-items: center;
         }
 
+        /* Container untuk Layar */
         .screen {
             position: absolute;
             top: 0;
@@ -50,6 +51,7 @@
             z-index: 10;
         }
 
+        /* Teks Intro */
         .intro-text {
             font-size: 1.1rem;
             line-height: 1.8;
@@ -59,6 +61,7 @@
             animation: fadeIn 2s ease-in-out;
         }
 
+        /* Tombol Violet */
         .btn-violet {
             background-color: #8b5cf6;
             color: white;
@@ -78,11 +81,11 @@
             transform: scale(0.95);
         }
 
-        /* Container & SVG Setup Terkoreksi */
+        /* Animasi Bunga Lily (SVG Drawing Effect) */
         .flower-container {
-            width: 320px;
-            height: 320px;
-            margin-bottom: 20px;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 30px;
             opacity: 0;
             transition: opacity 1s ease-in;
         }
@@ -91,30 +94,21 @@
             width: 100%;
             height: 100%;
             stroke: #8b5cf6;
-            stroke-width: 2; /* Garis ditebalkan agar jelas di HP */
+            stroke-width: 2;
             fill: none;
-            stroke-linecap: round;
-            stroke-linejoin: round;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
         }
 
-        /* Setup Animasi CSS SVG */
-        .stem-path {
-            stroke-dasharray: 300;
-            stroke-dashoffset: 300;
+        .draw-animation {
+            animation: draw 7s forwards ease-in-out;
         }
 
-        .bloom-path {
-            stroke-dasharray: 400;
-            stroke-dashoffset: 400;
-            fill: transparent;
-        }
-
-        @keyframes drawLine {
-            to { stroke-dashoffset: 0; }
-        }
-
-        @keyframes fillBloom {
-            to { fill: rgba(139, 92, 246, 0.12); }
+        @keyframes draw {
+            to {
+                stroke-dashoffset: 0;
+                fill: rgba(139, 92, 246, 0.1);
+            }
         }
 
         /* Pesan Akhir */
@@ -144,6 +138,7 @@
             color: #222;
         }
 
+        /* Pesan Tanpa Tekanan (No Pressure) */
         .no-pressure {
             font-size: 0.85rem;
             color: #888;
@@ -151,9 +146,9 @@
             padding-top: 20px;
             border-top: 1px solid #eee;
             line-height: 1.6;
-            max-width: 500px;
         }
 
+        /* Keyframes Umum */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -162,7 +157,7 @@
 </head>
 <body>
 
-    <audio id="bg-music" src="Clairo_Juna.mp3" preload="auto"></audio>
+    <audio id="bg-music" src="clairo.mp3" preload="auto"></audio>
 
     <div id="screen-intro" class="screen active">
         <div class="intro-text">
@@ -177,38 +172,12 @@
     <div id="screen-main" class="screen">
         
         <div id="flower" class="flower-container">
-            <svg class="flower-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                
-                <path class="stem-path" d="M96 170 L96 195 M104 170 L104 195" />
-                
-                <path class="stem-path" d="M100 170 Q100 130 100 90" />
-                
-                <path class="stem-path" d="M100 170 Q70 150 45 90" />
-                
-                <path class="stem-path" d="M100 170 Q130 150 155 90" />
-
-
-                <g transform="translate(100, 90)">
-                    <path class="bloom-path" d="M0 0 Q-5 -30 -30 -50 Q-10 -60 0 -40 Q10 -60 30 -50 Q5 -30 0 0" />
-                    <path class="bloom-path" d="M0 -40 Q-20 -80 0 -80 Q20 -80 0 -40" />
-                    <path class="bloom-path" d="M0 -40 Q-30 -70 -40 -50 Q-20 -40 0 -40" />
-                    <path class="bloom-path" d="M0 -40 Q30 -70 40 -50 Q20 -40 0 -40" />
-                </g>
-
-                <g transform="translate(45, 90) rotate(-35)">
-                    <path class="bloom-path" d="M0 0 Q-5 -30 -30 -50 Q-10 -60 0 -40 Q10 -60 30 -50 Q5 -30 0 0" />
-                    <path class="bloom-path" d="M0 -40 Q-20 -80 0 -80 Q20 -80 0 -40" />
-                    <path class="bloom-path" d="M0 -40 Q-30 -70 -40 -50 Q-20 -40 0 -40" />
-                    <path class="bloom-path" d="M0 -40 Q30 -70 40 -50 Q20 -40 0 -40" />
-                </g>
-
-                <g transform="translate(155, 90) rotate(35)">
-                    <path class="bloom-path" d="M0 0 Q-5 -30 -30 -50 Q-10 -60 0 -40 Q10 -60 30 -50 Q5 -30 0 0" />
-                    <path class="bloom-path" d="M0 -40 Q-20 -80 0 -80 Q20 -80 0 -40" />
-                    <path class="bloom-path" d="M0 -40 Q-30 -70 -40 -50 Q-20 -40 0 -40" />
-                    <path class="bloom-path" d="M0 -40 Q30 -70 40 -50 Q20 -40 0 -40" />
-                </g>
-
+            <svg class="flower-svg" id="lily-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 90 Q45 60 20 40 Q40 30 50 50 Q60 30 80 40 Q55 60 50 90" stroke-linecap="round"/>
+                <path d="M50 50 Q30 10 50 10 Q70 10 50 50" stroke-linecap="round"/>
+                <path d="M50 50 Q20 20 10 40 Q30 50 50 50" stroke-linecap="round"/>
+                <path d="M50 50 Q80 20 90 40 Q70 50 50 50" stroke-linecap="round"/>
+                <path d="M48 90 L48 100 M52 90 L52 100" stroke-width="1"/>
             </svg>
         </div>
 
@@ -217,12 +186,12 @@
         </div>
 
         <div id="msg-2" class="message-group" style="margin-top: 15px;">
-            <div class="spirit-text">Semangat Yaa buat UAS hari ini! ✨</div>
+            <div class="spirit-text">Semangat Yaa buat UAS hari nii! 🐈😸🌟🌠🌈☃️🫧✨🌸🪷🌹🌷🌼🌻🌺🪻</div>
         </div>
 
         <div id="msg-3" class="message-group">
             <div class="no-pressure">
-                Good luck on your exam tomorrow!
+                Good luck on your exam yaa!
             </div>
         </div>
 
@@ -234,44 +203,44 @@
             const screenIntro = document.getElementById("screen-intro");
             const screenMain = document.getElementById("screen-main");
             const music = document.getElementById("bg-music");
-            const flowerContainer = document.getElementById("flower");
+            const flower = document.getElementById("flower");
+            const svgPath = document.getElementById("lily-svg");
             
-            // Selector Animasi SVG
-            const stems = document.querySelectorAll('.stem-path');
-            const blooms = document.querySelectorAll('.bloom-path');
-
-            // Selector Teks
             const msg1 = document.getElementById("msg-1");
             const msg2 = document.getElementById("msg-2");
             const msg3 = document.getElementById("msg-3");
 
             btn.addEventListener("click", () => {
-                // Audio Main
-                music.play().catch(e => console.log("Audio diblokir browser"));
+                // 1. Mulai putar lagu Clairo
+                music.play().catch(error => {
+                    console.log("Audio autoplay diblokir, tapi proses jalan terus.");
+                });
 
-                // Transisi Layar
+                // 2. Transisi Hilangkan Layar 1
                 screenIntro.classList.remove("active");
 
+                // 3. Tampilkan Layar 2 setelah delay 1 detik (agar transisi halus)
                 setTimeout(() => {
                     screenMain.classList.add("active");
-                    flowerContainer.style.opacity = "1";
+                    flower.style.opacity = "1";
                     
-                    // 1. Gambar Batang Serentak
-                    stems.forEach(stem => {
-                        stem.style.animation = "drawLine 1.5s forwards ease-out";
-                    });
+                    // Mulai animasi gambar garis SVG
+                    svgPath.classList.add("draw-animation");
 
-                    // 2. Gambar dan Mekarkan Bunga (Delay 1 detik agar batang sampai atas dulu)
+                    // 4. Munculkan Teks 1 (To someone...) setelah gambar bunga mulai terbentuk
                     setTimeout(() => {
-                        blooms.forEach(bloom => {
-                            bloom.style.animation = "drawLine 2.5s forwards ease-out, fillBloom 3s forwards 1s ease-in-out";
-                        });
-                    }, 1000);
+                        msg1.classList.add("show");
+                    }, 2000);
 
-                    // 3. Teks Keluar Berurutan
-                    setTimeout(() => { msg1.classList.add("show"); }, 4000);
-                    setTimeout(() => { msg2.classList.add("show"); }, 5500);
-                    setTimeout(() => { msg3.classList.add("show"); }, 7000);
+                    // 5. Munculkan Teks 2 (Semangat UAS)
+                    setTimeout(() => {
+                        msg2.classList.add("show");
+                    }, 3500);
+
+                    // 6. Munculkan Teks Terakhir (No Pressure)
+                    setTimeout(() => {
+                        msg3.classList.add("show");
+                    }, 5000);
 
                 }, 1000);
             });
